@@ -13,5 +13,32 @@
   background: #ffffff;
   border-radius: 8px;
   height: 60%;
-  width: 35%;
+  width: 65%;
+}
+
+.infoBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #686868;
+  border-radius: 4px 4px 0 0;
+  height: 2em;
+  width: 100%;
+}
+.infoBarRight {
+  display: flex;
+  justify-content: flex-end;
+  background-color: #c1a6d1;
+  width: 5%;
+  margin-right: 5%;
+}
+
+.exit {
+  text-decoration: none;
+  margin-right: 25%;
+}
+
+.infoBarLeft {
+  color: #c1a6d1;
+  margin-left: 5%;
 }

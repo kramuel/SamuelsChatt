@@ -7,14 +7,21 @@ let socket;
 
 const Chat = () => {
   socket = io("localhost:5000");
-  let room;
+  let room = "example";
 
   console.log(socket);
   return (
     <div className="chatBox">
       <div className="chatInnerBox">
         <div className="infoBar">
-          <p>{room}</p>
+          <div className="infoBarLeft">
+            <p>{room}</p>
+          </div>
+          <div className="infoBarRight">
+            <a href="/" className="exit">
+              {"X"}
+            </a>
+          </div>
         </div>
         <div className="messages">
           <p className="message">test message</p>
@@ -23,6 +30,7 @@ const Chat = () => {
           <input type="text" className="test" />
         </div>
       </div>
+      <div className="userBox"></div>
     </div>
   );
 };
