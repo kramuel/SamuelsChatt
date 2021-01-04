@@ -1,3 +1,4 @@
+/*Chatbox!!!*/
 .chatBox {
   display: flex;
   justify-content: center;
@@ -16,6 +17,7 @@
   width: 65%;
 }
 
+/*INfobar!!*/
 .infoBar {
   display: flex;
   align-items: center;
@@ -29,16 +31,46 @@
   display: flex;
   justify-content: flex-end;
   background-color: #c1a6d1;
-  width: 5%;
+
   margin-right: 5%;
 }
 
 .exit {
+  display: flex;
   text-decoration: none;
-  margin-right: 25%;
+  justify-content: center;
+  align-items: center;
 }
 
 .infoBarLeft {
   color: #c1a6d1;
   margin-left: 5%;
+}
+
+/*Inputbar!!*/
+
+.form {
+  display: flex;
+  border-top: 2px solid #d3d3d3;
+}
+
+.input {
+  padding-left: 1%;
+  padding-top: 1%;
+  padding-right: 1%;
+  padding-bottom: 1%;
+
+  width: 80%;
+  font-size: 1.2em;
+  border: none;
+
+  border-radius: 0;
+}
+
+.sendButton {
+  background: #705a83;
+  padding: 5px;
+  display: inline-block;
+  border: none;
+  width: 20%;
 }
