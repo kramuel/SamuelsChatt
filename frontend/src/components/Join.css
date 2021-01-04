@@ -1,0 +1,47 @@
+html,
+body {
+  font-family: "Trebuchet MS", sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+#root {
+  height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.joinBox {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  height: 100vh;
+  align-items: center;
+  background-color: #2f2f35;
+}
+
+.joinInput {
+  border-radius: 0;
+  padding: 15px 20px;
+  width: 100%;
+}
+
+.heading {
+  color: white;
+  font-size: 2em;
+  padding-bottom: 10px;
+}
+
+.button {
+  color: #fff;
+  background: #575757;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  width: 50%;
+}
+.mt-20 {
+  margin-top: 20px;
+}
