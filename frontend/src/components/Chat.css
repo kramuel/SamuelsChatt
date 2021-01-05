@@ -69,8 +69,31 @@
 
 .sendButton {
   background: #705a83;
-  padding: 5px;
-  display: inline-block;
   border: none;
   width: 20%;
+}
+
+/*Messages!!*/
+
+.messages {
+  width: 85%;
+  padding: 5% 0;
+  overflow: auto;
+  flex: auto;
+  border: 1px solid;
+}
+
+/*UsersBox!!*/
+.usersBox {
+  width: 15%;
+  align-items: right;
+  border: 1px solid;
+}
+
+/*Mainboxc*/
+
+.mainBox {
+  display: flex;
+  flex: 1; /*fyller ut till infobaren och inputbaren!!!*/
+  max-height: 500px;
 }

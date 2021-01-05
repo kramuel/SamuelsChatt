@@ -16,7 +16,11 @@ const Join = () => {
     setRoom(e.target.value);
   };
 
-  const handleLink = (e) => {};
+  const handleLink = (e) => {
+    if (!name || !room) {
+      e.preventDefault();
+    }
+  };
 
   return (
     <div className="joinBox">

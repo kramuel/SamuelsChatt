@@ -33,6 +33,12 @@ const io = socketio(server, {
 io.on("connection", (socket) => {
   console.log("ny connection!!!!");
 
+  socket.on("join", ({ name, room }, callback) => {
+    console.log(name, room);
+
+    callback();
+  });
+
   socket.on("disconnect", () => {
     console.log("någon har disconnectat");
   });
