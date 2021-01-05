@@ -7,7 +7,7 @@ import "./Chat.css";
 
 let socket;
 
-//location prop från React Router
+//location =property från React Router
 const Chat = ({ location }) => {
   const [name, setName] = useState("");
   const [room, setRoom] = useState("");
@@ -29,6 +29,13 @@ const Chat = ({ location }) => {
 
     //skickar (name och room) med eventet (join)
     socket.emit("join", { name, room });
+
+    //unmounting/disconnect!!!
+    return () => {
+      socket.emit("disconnect");
+
+      socket.off();
+    };
   }, [ENDPOINT, location.search]);
 
   return (

@@ -2,6 +2,7 @@ const express = require("express");
 const socketio = require("socket.io");
 const path = require("path");
 const router = require("./router");
+const { addUser, removeUser, getUser, getUsersInRoom } = require("./users.js");
 
 const PORT = 5000;
 
@@ -29,17 +30,25 @@ const io = socketio(server, {
 //   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
 // });
 
-//får en socket när eventet'connection' kommer
+
+let count = 0;
+
+
+//får/ger en socket när eventet'connection' kommer
 io.on("connection", (socket) => {
-  console.log("ny connection!!!!");
+  count++;
+  console.log(`ny connection!!!! ${count}`);
 
   socket.on("join", ({ name, room }, callback) => {
     console.log(name, room);
 
-    callback();
+    addUser{id: socket.id, name, room}
+
+    //callback();
   });
 
   socket.on("disconnect", () => {
-    console.log("någon har disconnectat");
+    count--;
+    console.log(`någon har disconnectat! ${count}`);
   });
 });
