@@ -30,9 +30,7 @@ const io = socketio(server, {
 //   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
 // });
 
-
 let count = 0;
-
 
 //får/ger en socket när eventet'connection' kommer
 io.on("connection", (socket) => {
@@ -42,7 +40,7 @@ io.on("connection", (socket) => {
   socket.on("join", ({ name, room }, callback) => {
     console.log(name, room);
 
-    addUser{id: socket.id, name, room}
+    addUser(socket.id, name, room);
 
     //callback();
   });
@@ -51,4 +49,5 @@ io.on("connection", (socket) => {
     count--;
     console.log(`någon har disconnectat! ${count}`);
   });
+
 });
