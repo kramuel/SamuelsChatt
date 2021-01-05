@@ -38,16 +38,14 @@ io.on("connection", (socket) => {
   console.log(`ny connection!!!! ${count}`);
 
   socket.on("join", ({ name, room }, callback) => {
-    console.log(name, room);
-
-    addUser(socket.id, name, room);
-
+    const user = addUser(socket.id, name, room);
+    console.log(`${user.name} joinade precis! ${user.room}`);
     //callback();
   });
 
   socket.on("disconnect", () => {
+    const user = removeUser(socket.id);
     count--;
-    console.log(`någon har disconnectat! ${count}`);
+    console.log(`${user} har disconnectat! ${count}`);
   });
-
 });
