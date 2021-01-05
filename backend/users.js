@@ -16,7 +16,7 @@ const addUser = (id, name, room) => {
   const user = { id, name, room };
   users.push(user);
   console.log(users);
-  return user;
+  return { user };
 };
 
 const removeUser = (id) => {
@@ -29,8 +29,16 @@ const removeUser = (id) => {
   }
 };
 
-const getUser = () => {};
+const getUser = (id) => {
+  return users.find(function (user) {
+    user.id === id;
+  });
+};
 
-const getUsersInRoom = () => {};
+const getUsersInRoom = (room) => {
+  return users.filter(function (user) {
+    user.room === room;
+  });
+};
 
 module.exports = { addUser, removeUser, getUser, getUsersInRoom };

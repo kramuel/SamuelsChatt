@@ -39,7 +39,7 @@ io.on("connection", (socket) => {
 
   socket.on("join", ({ name, room }, callback) => {
     const user = addUser(socket.id, name, room);
-    console.log(`${user.name} joinade precis! ${user.room}`);
+    console.log(`${user} joinade precis! ${user.room}`);
     //callback();
   });
 
