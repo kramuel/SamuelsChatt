@@ -1,17 +1,24 @@
 //håller koll på users! -lägger till tar bort osv
 
 const users = [];
-console.log(users);
+//console.log(users);
 
 //new user(socket instans)
-const addUser = (id, name, room) => {
+const addUser = ({ id, name, room }) => {
   //save usernames in lowercase+trimed
   //Samuel Karlström ->samuelkarlström
 
   name = name.trim().toLowerCase();
   room = room.trim().toLowerCase();
 
-  //nyi- check if user already exist ( same username)
+  // check if user already exist ( same username)
+  const existingUser = users.find(function (user) {
+    return user.room === room && user.name === name;
+  });
+
+  if (existingUser) {
+    return { error: "Upptaget användarnamn" };
+  }
 
   const user = { id, name, room };
   users.push(user);
