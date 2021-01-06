@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import io from "socket.io-client";
+import * as io from "socket.io-client";
 import ScrollToBottom from "react-scroll-to-bottom";
 import querystring from "query-string";
 
@@ -11,9 +11,13 @@ let socket;
 const Chat = ({ location }) => {
   const [name, setName] = useState("");
   const [room, setRoom] = useState("");
+  const [messages, setMessages] = useState("");
+  const [message, setMessage] = useState("");
   const ENDPOINT = "localhost:5000";
+  let messagetest = "";
 
   const handleSendMessage = (e) => {
+    e.preventDefault();
     console.log(e.target.value);
   };
 
@@ -27,8 +31,12 @@ const Chat = ({ location }) => {
     setName(name);
     setRoom(room);
 
-    //skickar (name och room) med eventet (join)
-    socket.emit("join", { name, room });
+    //skickar (name och room) med eventet (join) /får error från callback
+    socket.emit("join", { name, room }, (error) => {
+      if (error) {
+        alert(error);
+      }
+    });
 
     //unmounting/disconnect!!!
     return () => {
@@ -37,6 +45,15 @@ const Chat = ({ location }) => {
       socket.off();
     };
   }, [ENDPOINT, location.search]);
+
+  //för att hantera meddelanden
+  useEffect(() => {
+    //
+    socket.on("message", (message) => {
+      console.log(message);
+      setMessage(message.text);
+    });
+  });
 
   return (
     <div className="chatBox">
@@ -55,7 +72,9 @@ const Chat = ({ location }) => {
           <ScrollToBottom className="messages">
             <div className="messageRow">
               <div className="sender"></div>
-              <div className="message"></div>
+              <div className="message">
+                <p>{message}</p>
+              </div>
             </div>
           </ScrollToBottom>
           <div className="usersBox">
@@ -68,7 +87,7 @@ const Chat = ({ location }) => {
             type="text"
             placeholder="Skriv ett meddelande..."
           />
-          <button className="sendButton" onClick={handleSendMessage}>
+          <button className="sendButton" onClick={(e) => handleSendMessage(e)}>
             Send
           </button>
         </form>

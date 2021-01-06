@@ -49,7 +49,7 @@ io.on("connect", function (socket) {
 
     socket.join(user.room);
 
-    //callback();
+    callback();
   });
 
   socket.on("disconnect", () => {
