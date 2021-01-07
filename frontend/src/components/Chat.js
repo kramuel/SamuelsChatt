@@ -79,7 +79,11 @@ const Chat = ({ location }) => {
         <div className="mainBox">
           <ScrollToBottom className="messages">
             {messages.map((msg, i) => (
-              <div key={i}>{msg.text}</div>
+              <div key={i}>
+                <p>
+                  &lt;{msg.user}&gt;: {msg.text}
+                </p>
+              </div>
             ))}
           </ScrollToBottom>
           <div className="usersBox">
