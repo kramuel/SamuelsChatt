@@ -64,6 +64,10 @@ io.on("connect", function (socket) {
     const user = removeUser(socket.id);
     if (user) {
       console.log(`${user.name} har disconnectat!`);
+      io.to(user.room).emit("message", {
+        user: "ChatBot",
+        text: `${user.name} har disconnectat!`,
+      });
     }
   });
 });
