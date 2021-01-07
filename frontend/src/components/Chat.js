@@ -11,15 +11,9 @@ let socket;
 const Chat = ({ location }) => {
   const [name, setName] = useState("");
   const [room, setRoom] = useState("");
-  const [messages, setMessages] = useState("");
+  const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const ENDPOINT = "localhost:5000";
-  let messagetest = "";
-
-  const handleSendMessage = (e) => {
-    e.preventDefault();
-    console.log(e.target.value);
-  };
 
   //körs när chat laddas
   useEffect(() => {
@@ -46,14 +40,28 @@ const Chat = ({ location }) => {
     };
   }, [ENDPOINT, location.search]);
 
-  //för att hantera meddelanden
+  //för att hantera inkommande meddelanden
   useEffect(() => {
-    //
-    socket.on("message", (message) => {
-      console.log(message);
-      setMessage(message.text);
+    socket.on("message", (incMsg) => {
+      setMessages([...messages, incMsg]); //lägger till inkommande meddelande, sist i arrayen
     });
-  });
+
+    //unsubscribar socketen från eventet(så att inte fler o fler bara skapas och sparas)
+    return () => {
+      socket.off();
+    };
+  }, [messages]);
+
+  const handleSendMessage = (e) => {
+    e.preventDefault();
+
+    //om det finns ett message
+    if (message) {
+      socket.emit("sendMessage", message, () => {
+        setMessage(""); //clear message
+      });
+    }
+  };
 
   return (
     <div className="chatBox">
@@ -70,12 +78,9 @@ const Chat = ({ location }) => {
         </div>
         <div className="mainBox">
           <ScrollToBottom className="messages">
-            <div className="messageRow">
-              <div className="sender"></div>
-              <div className="message">
-                <p>{message}</p>
-              </div>
-            </div>
+            {messages.map((msg, i) => (
+              <div key={i}>{msg.text}</div>
+            ))}
           </ScrollToBottom>
           <div className="usersBox">
             <p>{name}</p>
@@ -86,6 +91,11 @@ const Chat = ({ location }) => {
             className="input"
             type="text"
             placeholder="Skriv ett meddelande..."
+            value={message}
+            onChange={({ target: { value } }) => setMessage(value)}
+            onKeyPress={(event) =>
+              event.key === "Enter" ? handleSendMessage(event) : null
+            }
           />
           <button className="sendButton" onClick={(e) => handleSendMessage(e)}>
             Send
