@@ -37,14 +37,14 @@ io.on("connect", function (socket) {
     //om vi fick ett error från addUser, callbacka error obj
     if (error) return callback(error);
 
-    //join msg
-    socket.emit("message", {
-      user: "ChatBot",
-      text: `${user.name} har joinat rummet!`,
-    });
-
     //sorterar alla sockets i rooms
     socket.join(user.room);
+
+    //join msg
+    io.to(user.room).emit("message", {
+      user: "ChatBot",
+      text: `${user.name} har joinat ${user.room}!`,
+    });
 
     //tom callback om allt gick bra
     callback();
