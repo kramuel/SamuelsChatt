@@ -5,11 +5,12 @@ const path = require("path");
 const { addUser, removeUser, getUser, getUsersInRoom } = require("./users.js");
 
 const PORT = 5000;
+const local_ip = "192.168.10.131";
 
 const app = express();
 
 //"startar server"
-const server = app.listen(PORT, () =>
+const server = app.listen(PORT, "0.0.0.0", () =>
   console.log(`servern har startat på port: ${PORT} `)
 );
 
@@ -21,11 +22,11 @@ const io = socketio(server, {
 });
 
 //använd dessa för build sen!!!
-// app.use(express.static(path.join(__dirname, "../frontend/build")));
+app.use(express.static(path.join(__dirname, "../frontend/build")));
 
-// app.get("/*", function (req, res) {
-//   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
-// });
+app.get("/*", function (req, res) {
+  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
+});
 
 //får/ger en socket när eventet'connection' kommer
 io.on("connect", function (socket) {

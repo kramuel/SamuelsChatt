@@ -13,7 +13,7 @@ const Chat = ({ location }) => {
   const [room, setRoom] = useState("");
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
-  const ENDPOINT = "localhost:5000";
+  const ENDPOINT = "192.168.10.131:5000";
 
   //körs när chat laddas
   useEffect(() => {

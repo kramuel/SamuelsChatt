@@ -22,31 +22,40 @@ const Join = () => {
     }
   };
 
+  const handleSubmit = (e) => {
+    handleLink(e);
+  };
+
   return (
     <div className="joinBox">
       <div className="joinInnerBox">
         <h3 className="heading">Samuels Chatt!</h3>
-        <div>
-          <input
-            placeholder="Namn.."
-            className="joinInput"
-            type="text"
-            onChange={handleNameInput}
-          />
-        </div>
-        <div>
-          <input
-            placeholder="Rum.."
-            className="joinInput mt-20"
-            type="text"
-            onChange={handleRoomInput}
-          />
-        </div>
-        <Link onClick={handleLink} to={`/chat?name=${name}&room=${room}`}>
-          <button className={"button mt-20"} type="submit">
-            Logga in
-          </button>
-        </Link>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <input
+              placeholder="Namn.."
+              className="joinInput"
+              type="text"
+              onChange={handleNameInput}
+            />
+          </div>
+          <div>
+            <input
+              placeholder="Rum.."
+              className="joinInput mt-20"
+              type="text"
+              onChange={handleRoomInput}
+              onKeyPress={(event) =>
+                event.key === "Enter" ? handleSubmit(event) : null
+              }
+            />
+          </div>
+          <Link onClick={handleSubmit} to={`/chat?name=${name}&room=${room}`}>
+            <button className={"button mt-20"} type="submit">
+              Logga in
+            </button>
+          </Link>
+        </form>
       </div>
     </div>
   );
