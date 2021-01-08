@@ -1,10 +1,10 @@
 const express = require("express");
 const socketio = require("socket.io");
 const path = require("path");
+const fs = require("fs");
 
 const date = new Date().toLocaleDateString();
 const fileName = path.join(__dirname, "./textlogs/", date) + ".json";
-
 
 const {
   addUser,
@@ -30,6 +30,30 @@ const io = socketio(server, {
   cors: {
     origin: "*",
   },
+});
+
+//API???
+app.get("/api/:day/", (req, res) => {
+  let file = path.join(__dirname, "./textlogs/", req.params.day) + ".json";
+  fs.readFile(file, (err, data) => {
+    if (err) return console.log(err);
+    let jsonLog = JSON.parse(data).messages;
+    res.send(jsonLog);
+  });
+});
+app.get("/api/:day/:user", (req, res) => {
+  let file = path.join(__dirname, "./textlogs/", req.params.day) + ".json";
+
+  fs.readFile(file, (err, data) => {
+    if (err) return console.log(err);
+
+    let jsonLog = JSON.parse(data).messages;
+
+    let a = jsonLog.filter((msg) => {
+      return msg.user === req.params.user;
+    });
+    res.send(a);
+  });
 });
 
 //använd dessa för build sen!!!
