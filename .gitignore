@@ -25,5 +25,5 @@
 /frontend/yarn-error.log*
 
 /frontend/.eslintcache
-/frontend/public
+
 .vscode/launch.json
