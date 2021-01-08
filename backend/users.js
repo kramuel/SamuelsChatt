@@ -1,4 +1,5 @@
 //håller koll på users! -lägger till tar bort osv
+const fs = require("fs");
 const users = [];
 
 //new user(socket instans)
@@ -52,4 +53,46 @@ const timeStamp = () => {
   return timeStamp;
 };
 
-module.exports = { addUser, removeUser, getUser, getUsersInRoom, timeStamp };
+const logData = (fileName, msg) => {
+  if (fs.existsSync(fileName)) {
+    fs.readFile(fileName, (err, data) => {
+      if (err) return console.log(err);
+      let jsonLog = JSON.parse(data);
+      jsonLog["messages"].push(msg);
+      fs.writeFile(
+        fileName,
+        JSON.stringify(jsonLog, null, 2),
+        function writeJSON(err) {
+          if (err) return console.log(err);
+          console.log("writing to log file");
+        }
+      );
+    });
+  } else {
+    let obj = {
+      messages: [],
+    };
+    obj.messages.push({
+      user: "SERVER",
+      text: "SERVER STARTED",
+      time: timeStamp(),
+    });
+    fs.writeFile(
+      fileName,
+      JSON.stringify(obj, null, 2),
+      function writeJSON(err) {
+        if (err) return console.log(err);
+        console.log("writing to " + msg.time + ".json");
+      }
+    );
+  }
+};
+
+module.exports = {
+  addUser,
+  removeUser,
+  getUser,
+  getUsersInRoom,
+  timeStamp,
+  logData,
+};

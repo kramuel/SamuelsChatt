@@ -11,7 +11,7 @@
 /frontend/coverage
 
 # production
-
+/backend/textlogs
 
 # misc
 /frontend/.DS_Store

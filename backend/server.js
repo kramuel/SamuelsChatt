@@ -2,12 +2,17 @@ const express = require("express");
 const socketio = require("socket.io");
 const path = require("path");
 
+const date = new Date().toLocaleDateString();
+const fileName = path.join(__dirname, "./textlogs/", date) + ".json";
+
+
 const {
   addUser,
   removeUser,
   getUser,
   getUsersInRoom,
   timeStamp,
+  logData,
 } = require("./users.js");
 
 const PORT = 5000;
@@ -47,12 +52,15 @@ io.on("connect", function (socket) {
     socket.join(user.room);
 
     console.log(`${timeStamp()} -${user.name}- har joinat -${user.room}-!`);
-    //join msg!!***!!
-    io.to(user.room).emit("message", {
+    let msg = {
       user: "ChatBot",
-      text: `${user.name} har joinat ${user.room}!`,
+      text: `${user.name} har joinat rum: ${user.room}!`,
       time: timeStamp(),
-    });
+    };
+    logData(fileName, msg);
+
+    //join msg!!***!!
+    io.to(user.room).emit("message", msg);
 
     io.to(user.room).emit("roomUsers", getUsersInRoom(user.room));
 
@@ -64,20 +72,15 @@ io.on("connect", function (socket) {
     //får vilken unik socket som skickade eventet sendmessage
     const user = getUser(socket.id);
 
-    console.log(
-      timeStamp(),
-      user.name,
-      "sent msg:",
-      message,
-      "to room: ",
-      user.room
-    );
-    //sckickar eventeten 'message' till user.room med obj. user,name (samma som message i chat.js)
-    io.to(user.room).emit("message", {
+    console.log(`${timeStamp()} -${user.name}- wrote:  -${message}-!`);
+    let msg = {
       user: user.name,
       text: message,
       time: timeStamp(),
-    });
+    };
+    logData(fileName, msg);
+    //sckickar eventeten 'message' till user.room med obj. user,name (samma som message i chat.js)
+    io.to(user.room).emit("message", msg);
 
     callback();
   });
@@ -86,13 +89,15 @@ io.on("connect", function (socket) {
     const user = removeUser(socket.id);
     if (user) {
       console.log(
-        `${timeStamp()} -${user.name}- har disconnectat från ${user.room}!`
+        `${timeStamp()} -${user.name}- har disconnectat från rum: ${user.room}!`
       );
-      io.to(user.room).emit("message", {
+      let msg = {
         user: "ChatBot",
         text: `${user.name} har disconnectat!`,
         time: timeStamp(),
-      });
+      };
+      logData(fileName, msg);
+      io.to(user.room).emit("message", msg);
 
       io.to(user.room).emit("roomUsers", getUsersInRoom(user.room));
     }
