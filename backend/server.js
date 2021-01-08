@@ -3,14 +3,15 @@ const socketio = require("socket.io");
 const path = require("path");
 
 const { addUser, removeUser, getUser, getUsersInRoom } = require("./users.js");
+const { ClientRequest } = require("http");
 
 const PORT = 5000;
-const local_ip = "192.168.10.131";
+const local_ip = ["192.168.10.131", "0.0.0.0"];
 
 const app = express();
 
 //"startar server"
-const server = app.listen(PORT, "0.0.0.0", () =>
+const server = app.listen(PORT, () =>
   console.log(`servern har startat på port: ${PORT} `)
 );
 
@@ -45,6 +46,8 @@ io.on("connect", function (socket) {
       user: "ChatBot",
       text: `${user.name} har joinat ${user.room}!`,
     });
+    console.log(getUsersInRoom(user.room));
+    io.to(user.room).emit("roomUsers", getUsersInRoom(user.room));
 
     //tom callback om allt gick bra
     callback();
@@ -68,6 +71,7 @@ io.on("connect", function (socket) {
         user: "ChatBot",
         text: `${user.name} har disconnectat!`,
       });
+      io.to(user.room).emit("roomUsers", getUsersInRoom(user.room));
     }
   });
 });

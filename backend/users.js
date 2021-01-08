@@ -41,10 +41,9 @@ const getUser = (id) => {
   });
 };
 
-const getUsersInRoom = (room) => {
-  return users.filter(function (user) {
-    user.room === room;
+const getUsersInRoom = (room) =>
+  users.filter(function (user) {
+    return user.room === room;
   });
-};
 
 module.exports = { addUser, removeUser, getUser, getUsersInRoom };

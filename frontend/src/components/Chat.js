@@ -9,8 +9,8 @@ let socket;
 
 //location =property från React Router
 const Chat = ({ location }) => {
-  const [name, setName] = useState("");
   const [room, setRoom] = useState("");
+  const [users, setUsers] = useState([]);
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const ENDPOINT = "192.168.10.131:5000";
@@ -22,7 +22,6 @@ const Chat = ({ location }) => {
 
     socket = io(ENDPOINT);
 
-    setName(name);
     setRoom(room);
 
     //skickar (name och room) med eventet (join) /får error från callback
@@ -45,7 +44,10 @@ const Chat = ({ location }) => {
     socket.on("message", (incMsg) => {
       setMessages([...messages, incMsg]); //lägger till inkommande meddelande, sist i arrayen
     });
-
+    socket.on("roomUsers", (users) => {
+      console.log(users);
+      setUsers(users);
+    });
     //unsubscribar socketen från eventet(så att inte fler o fler bara skapas och sparas)
     return () => {
       socket.off();
@@ -87,7 +89,11 @@ const Chat = ({ location }) => {
             ))}
           </ScrollToBottom>
           <div className="usersBox">
-            <p>{name}</p>
+            {users.map((user, i) => (
+              <div key={i}>
+                <p>{user.name}</p>
+              </div>
+            ))}
           </div>
         </div>
         <form className="form">
