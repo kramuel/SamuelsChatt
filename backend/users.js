@@ -1,5 +1,4 @@
 //håller koll på users! -lägger till tar bort osv
-
 const users = [];
 
 //new user(socket instans)
@@ -20,7 +19,6 @@ const addUser = ({ id, name, room }) => {
 
   const user = { id, name, room };
   users.push(user);
-  console.log("--addUser--users array in user.js:", users);
   return { user };
 };
 
@@ -32,7 +30,6 @@ const removeUser = (id) => {
   if (index !== -1) {
     return users.splice(index, 1)[0];
   }
-  console.log("(--RemoveUser--users array in user.js:", users);
 };
 
 const getUser = (id) => {
@@ -46,4 +43,13 @@ const getUsersInRoom = (room) =>
     return user.room === room;
   });
 
-module.exports = { addUser, removeUser, getUser, getUsersInRoom };
+const timeStamp = () => {
+  let time = new Date();
+  let timeStamp = time.toLocaleTimeString("sv-SE", {
+    hour: "numeric",
+    minute: "numeric",
+  });
+  return timeStamp;
+};
+
+module.exports = { addUser, removeUser, getUser, getUsersInRoom, timeStamp };

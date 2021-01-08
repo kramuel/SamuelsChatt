@@ -54,7 +54,7 @@ const Chat = ({ location }) => {
     };
   }, [messages]);
 
-  const handleSendMessage = (e) => {
+  function handleSendMessage(e) {
     e.preventDefault();
 
     //om det finns ett message
@@ -63,7 +63,7 @@ const Chat = ({ location }) => {
         setMessage(""); //clear message
       });
     }
-  };
+  }
 
   return (
     <div className="chatBox">
@@ -83,7 +83,7 @@ const Chat = ({ location }) => {
             {messages.map((msg, i) => (
               <div key={i}>
                 <p>
-                  &lt;{msg.user}&gt;: {msg.text}
+                &#91;{msg.time}&#93; &lt;{msg.user}&gt;: {msg.text}
                 </p>
               </div>
             ))}

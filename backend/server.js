@@ -2,8 +2,13 @@ const express = require("express");
 const socketio = require("socket.io");
 const path = require("path");
 
-const { addUser, removeUser, getUser, getUsersInRoom } = require("./users.js");
-const { ClientRequest } = require("http");
+const {
+  addUser,
+  removeUser,
+  getUser,
+  getUsersInRoom,
+  timeStamp,
+} = require("./users.js");
 
 const PORT = 5000;
 const local_ip = ["192.168.10.131", "0.0.0.0"];
@@ -11,7 +16,7 @@ const local_ip = ["192.168.10.131", "0.0.0.0"];
 const app = express();
 
 //"startar server"
-const server = app.listen(PORT, () =>
+const server = app.listen(PORT, local_ip[1], () =>
   console.log(`servern har startat på port: ${PORT} `)
 );
 
@@ -41,12 +46,14 @@ io.on("connect", function (socket) {
     //sorterar alla sockets i rooms
     socket.join(user.room);
 
-    //join msg
+    console.log(`${timeStamp()} -${user.name}- har joinat -${user.room}-!`);
+    //join msg!!***!!
     io.to(user.room).emit("message", {
       user: "ChatBot",
       text: `${user.name} har joinat ${user.room}!`,
+      time: timeStamp(),
     });
-    console.log(getUsersInRoom(user.room));
+
     io.to(user.room).emit("roomUsers", getUsersInRoom(user.room));
 
     //tom callback om allt gick bra
@@ -56,9 +63,21 @@ io.on("connect", function (socket) {
   socket.on("sendMessage", (message, callback) => {
     //får vilken unik socket som skickade eventet sendmessage
     const user = getUser(socket.id);
-    console.log(user.name, "sent msg:", message, "to room: ", user.room);
+
+    console.log(
+      timeStamp(),
+      user.name,
+      "sent msg:",
+      message,
+      "to room: ",
+      user.room
+    );
     //sckickar eventeten 'message' till user.room med obj. user,name (samma som message i chat.js)
-    io.to(user.room).emit("message", { user: user.name, text: message });
+    io.to(user.room).emit("message", {
+      user: user.name,
+      text: message,
+      time: timeStamp(),
+    });
 
     callback();
   });
@@ -66,11 +85,15 @@ io.on("connect", function (socket) {
   socket.on("disconnect", () => {
     const user = removeUser(socket.id);
     if (user) {
-      console.log(`${user.name} har disconnectat!`);
+      console.log(
+        `${timeStamp()} -${user.name}- har disconnectat från ${user.room}!`
+      );
       io.to(user.room).emit("message", {
         user: "ChatBot",
         text: `${user.name} har disconnectat!`,
+        time: timeStamp(),
       });
+
       io.to(user.room).emit("roomUsers", getUsersInRoom(user.room));
     }
   });
